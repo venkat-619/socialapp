@@ -2,6 +2,18 @@ const express = require('express');
 const format = require('date-format');
 const app = express();
 
+// swagger docs
+const swaggerUi = require('swagger-ui-express');
+// requiring as yaml file
+const fs = require("fs")
+const YAML = require('yaml')
+
+const file  = fs.readFileSync('./swagger.yaml', 'utf8')
+const swaggerDocument = YAML.parse(file)
+
+// it is a middleware
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 const PORT = process.env.PORT || 4000;
 
 // / means home route
@@ -67,7 +79,7 @@ app.get("/api/v1/linkedin", (req, res) => {
 
 
 
-// req.path gives path like v1/venkat gives "/venkat" we can use jsavascipt to remove / and return it
+// req.path gives path like v1/venkat gives "/venkat" we can use javascipt to remove / and return it
 // req.query gives that is present after question mark
 // req.params gives exactly after the route / like v1/venkat to venkat
 
